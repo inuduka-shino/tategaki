@@ -1,0 +1,13 @@
+#disp {
+  writing-mode: vertical-rl;
+  font-family: "Noto-Serif-CJK-JP";
+  margin: 50px;
+  font-size: xx-large;
+  height: 950px;
+  width: 600px;
+
+}
+
+#disp .tur {
+  text-combine-upright: all;
+}
