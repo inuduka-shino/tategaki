@@ -20,6 +20,11 @@ const LoadedDocument = new Promise((resolve) => {
 LoadedDocument.then(()=>{
   console.log('LoadedDoccument');
   const disp = $id('disp');
+  fetch('sample.data').then((data) =>{
+      return data.text();
+  }).then((datatext)=> {
+      disp.innerHTML=datatext;
+  })
   disp.innerHTML='<p>縦書き<b>日本語</b>です。</p>' + `
   <p>
   １２３４５６７８９０
