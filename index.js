@@ -22,14 +22,13 @@ router.get('/', async (ctx, next) => {
   await next();
 });*/
 app.use(async (ctx, next) => {
-  const path = ctx.rquest.path;
+  const path = ctx.request.path;
 
   if (path === '') {
-
     console.log(`add slash:${ctx.url}`);
     console.log(`url:${ctx.request.url}`);
     console.log(`path:${ctx.request.path}`);
-    ctx.path += '/';
+    ctx.request.path += '/';
     console.log(`url:${ctx.request.url}`);
     console.log(`path:${ctx.request.path}`);
   }

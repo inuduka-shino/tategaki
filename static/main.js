@@ -1,31 +1,53 @@
 /*eslint-env browser */
-'use strict';
+/*eslint no-console: off */
 
 console.log('loaded main.js');
-console.log(`Promise:${typeof Promise}` );
+console.log(`Promise:${typeof Promise}`);
 
 const $id=document.getElementById.bind(document);
 
 const LoadedDocument = new Promise((resolve) => {
   console.log(`Doc readyState:${document.readyState}`);
 
-  if (document.readyState !== "loading") {
-      console.log(`Doc readyState:${document.readyState}`);
-      resolve();
-  } else {
+  if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', resolve);
+  } else {
+    console.log(`Doc readyState:${document.readyState}`);
+    resolve();
   }
 });
 
+
+function infoMessage($info) {
+  return {
+    log(msg) {
+      $info.textContent=msg;
+    }
+  };
+}
+function ttgView($disp) {
+  return {
+    setInnerHTML(strHtml) {
+      $disp.innerHTML=strHtml;
+    }
+  };
+}
+
 LoadedDocument.then(()=>{
   console.log('LoadedDoccument');
-  const disp = $id('disp');
-  fetch('sample.data').then((data) =>{
-      return data.text();
-  }).then((datatext)=> {
-      disp.innerHTML=datatext;
-  })
-  disp.innerHTML='<p>縦書き<b>日本語</b>です。</p>' + `
+
+  const tView = ttgView($id('disp')),
+        message = infoMessage($id('info'));
+
+  message.log('hello.');
+
+  if (!navigator.serviceWorker) {
+    //console.log(`navigator.serviceWorker:${typeof navigator.serviceWorker}`);
+    message.log('serviceWorkerが使えません。');
+  }
+
+  tView.setInnerHTML(`
+  <p>縦書き<b>日本語</b>です。</p>
   <p>
   １２３４５６７８９０
   １２３４５６７８９０
@@ -33,5 +55,10 @@ LoadedDocument.then(()=>{
   １２３４５６７８９０
   １２３４５６７８９０
   </p>
-  `;
+  `);
+
+  fetch('sample.data').then((data) =>{
+      return data.text();
+  })
+  .then(tView.innerHTML);
 });
