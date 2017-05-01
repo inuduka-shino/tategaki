@@ -45,7 +45,14 @@ LoadedDocument.then(()=>{
     //console.log(`navigator.serviceWorker:${typeof navigator.serviceWorker}`);
     message.log('serviceWorkerが使えません。');
   }
-
+  navigator.serviceWorker.register('./sw-cash.js')
+  .then(()=>{
+    message.log('serviceWorker.register成功。');
+  })
+  .catch((err)=>{
+    message.log('serviceWorker.register失敗。');
+    throw err;
+  });
   tView.setInnerHTML(`
   <p>縦書き<b>日本語</b>です。</p>
   <p>
