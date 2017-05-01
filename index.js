@@ -1,10 +1,9 @@
-/*eslint-env node */
 /* tategaki index.js */
-
+/*eslint-env node */
+/*eslint no-console: off */
 
 import path from 'path';
 import Koa from 'koa';
-import Router from 'koa-router';
 import serv from 'koa-static';
 
 const app = new Koa();
@@ -23,8 +22,18 @@ router.get('/', async (ctx, next) => {
   await next();
 });*/
 app.use(async (ctx, next) => {
-  console.log(`url:${ctx.request.url}`);
-  console.log(`path:${ctx.request.path}`);
+  const path = ctx.rquest.path;
+
+  if (path === '') {
+
+    console.log(`add slash:${ctx.url}`);
+    console.log(`url:${ctx.request.url}`);
+    console.log(`path:${ctx.request.path}`);
+    ctx.path += '/';
+    console.log(`url:${ctx.request.url}`);
+    console.log(`path:${ctx.request.path}`);
+  }
+
   await next();
 });
 
