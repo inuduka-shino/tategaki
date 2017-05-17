@@ -41,18 +41,19 @@ LoadedDocument.then(()=>{
 
   message.log('hello.');
 
-  if (!navigator.serviceWorker) {
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.register('./sw-cash.js')
+    .then(()=>{
+      message.log('serviceWorker.register成功。');
+    })
+    .catch((err)=>{
+      message.log('serviceWorker.register失敗。');
+      throw err;
+    });
+  } else {
     //console.log(`navigator.serviceWorker:${typeof navigator.serviceWorker}`);
     message.log('serviceWorkerが使えません。');
   }
-  navigator.serviceWorker.register('./sw-cash.js')
-  .then(()=>{
-    message.log('serviceWorker.register成功。');
-  })
-  .catch((err)=>{
-    message.log('serviceWorker.register失敗。');
-    throw err;
-  });
   tView.setInnerHTML(`
   <p>縦書き<b>日本語</b>です。</p>
   <p>
@@ -67,5 +68,5 @@ LoadedDocument.then(()=>{
   fetch('sample.data').then((data) =>{
       return data.text();
   })
-  .then(tView.innerHTML);
+  .then(tView.setInnerHTML);
 });
